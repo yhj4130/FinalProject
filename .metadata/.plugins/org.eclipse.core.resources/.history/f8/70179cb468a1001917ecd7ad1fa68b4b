@@ -1,0 +1,9 @@
+package com.together.web.login;
+
+public interface IUserDAO {
+	
+	// 로그인
+	public int login(UserDTO dto);
+	
+	// 회원가입
+}

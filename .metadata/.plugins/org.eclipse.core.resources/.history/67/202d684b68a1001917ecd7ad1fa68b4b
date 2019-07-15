@@ -1,0 +1,5 @@
+package com.together.web.login;
+
+public interface IJoinDAO {
+	
+}

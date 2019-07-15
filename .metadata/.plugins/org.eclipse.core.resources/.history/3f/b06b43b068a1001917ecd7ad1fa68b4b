@@ -1,0 +1,8 @@
+package com.together.web.login;
+
+public interface IJoinDAO {
+	public int checkId(UserDTO dto);
+	public int checkNickname(UserDTO dto);
+	public int checkEmail(UserDTO dto);
+	public int add(UserDTO dto);
+}

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.together.web.category.ITravelDAO">
+     
+  	 <select id="nowRecruitTravelNum" resultType="java.lang.Integer">
+  		SELECT COUNT(*) AS COUNT
+		FROM BEST_VIEW
+  	</select>
+  	
+  	<select id="travelInfoBasic" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+  		SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM ( SELECT TRAVELCODE
+    		                    ,TITLE
+    		                    ,NICKNAME
+    		                    ,TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+  				                ,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END
+  				                ,TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+  				                ,IMG
+            	            FROM BEST_VIEW
+            	        ORDER BY RATIO DESC, ${orderBy} DESC ) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+	</select>
+  	
+  	<select id="tThemaType" parameterType="java.lang.Integer" resultType="java.lang.String">
+  		SELECT THEMATYPE
+		FROM VIEW_TRAVEL_THEMA
+		WHERE TRAVELCODE = #{travelCode}
+  	</select>
+  	
+  	<select id="tCityStart" parameterType="java.lang.Integer" resultType="com.together.web.category.TravelDTO">
+  		SELECT REGION AS REGION_START, CITY AS CITY_START
+		FROM T_CITY
+		WHERE T_REGIONCODE = 
+		(SELECT MIN(T_REGIONCODE) FROM T_REGION	WHERE TRAVELCODE = #{travelCode} )				
+  	</select>
+  	
+  	<select id="tCityEnd" parameterType="java.lang.Integer" resultType="com.together.web.category.TravelDTO">
+  		SELECT REGION AS REGION_END, CITY AS CITY_END
+		FROM T_CITY
+		WHERE T_REGIONCODE = 
+		(SELECT MAX(T_REGIONCODE) FROM T_REGION	WHERE TRAVELCODE = #{travelCode} )				
+  	</select>
+  	
+  	<select id="themaAll" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+        SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM ( SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+           	  					,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+              					, IMG
+              				FROM BEST_VIEW
+          				ORDER BY ${orderBy} ) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select> 
+     
+     <select id="themaNum" parameterType="com.together.web.category.TravelDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BEST_VIEW
+      WHERE TRAVELCODE IN (SELECT TRAVELCODE FROM T_THEMA WHERE THEMACODE IN (${orderNum}))
+     </select>
+     
+    <select id="themalist" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+        SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM ( SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+           						,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+           						, IMG  FROM BEST_VIEW
+     						 WHERE TRAVELCODE IN (SELECT TRAVELCODE FROM T_THEMA WHERE THEMACODE IN (${orderNum}))
+      					ORDER BY ${orderBy} ) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select>
+     
+     <select id="periodNum" parameterType="com.together.web.category.TravelDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+          FROM BEST_VIEW
+         WHERE PERIOD = ${orderNum}
+     </select>
+     
+     <select id="periodlist" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">      
+      	SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM ( SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+           						,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+           						, IMG  FROM BEST_VIEW
+      						WHERE PERIOD = ${orderNum}
+      						ORDER BY ${orderBy} ) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select> 
+     
+     <select id="periodNumOther" parameterType="com.together.web.category.TravelDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM BEST_VIEW
+      WHERE PERIOD <![CDATA[>=]]> ${orderNum}
+     </select>
+     
+     <select id="periodlistOther" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+     	SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM ( SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+           						,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+           						, IMG  FROM BEST_VIEW
+      						WHERE PERIOD <![CDATA[>=]]> ${orderNum}
+      						ORDER BY ${orderBy} ) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select>
+     
+     <!-- 지역 -->
+     <select id="regionNum" parameterType="com.together.web.category.TravelDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BEST_VIEW
+      		WHERE TRAVELCODE IN (SELECT TRAVELCODE FROM T_REGION WHERE REGIONCODE = ${orderNum})
+     </select>
+     
+     <select id="regionlist" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+      	SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM (  SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+           						,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+           						, IMG  FROM BEST_VIEW
+      						WHERE TRAVELCODE IN (SELECT TRAVELCODE FROM T_REGION WHERE REGIONCODE = ${orderNum})
+      						ORDER BY ${orderBy} ) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select>
+     
+     <select id="favorthemalist" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+      	SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM (  SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+           						,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+           						, IMG  FROM BEST_VIEW
+      						WHERE TRAVELCODE IN (SELECT TRAVELCODE FROM T_REGION WHERE REGIONCODE = ${orderNum})
+      						ORDER BY ${orderBy} ) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select> 
+  
+  </mapper>
