@@ -3,7 +3,6 @@
 /* header */
 .header-sec {
 	width: 1140px;
-	height: 220px;
 }
 
 .headerNav {
@@ -21,7 +20,6 @@
 .header-sec>.header {
 	text-align: center;
 	width: 1140px;
-	height: 220px;
 }
 
 img.imgLogo {
@@ -252,6 +250,7 @@ img.imgLogo {
 
 .contentBoth {
     display: flex;
+	margin-bottom: 100px;
 }
 .contentLeft {
     flex: 1;

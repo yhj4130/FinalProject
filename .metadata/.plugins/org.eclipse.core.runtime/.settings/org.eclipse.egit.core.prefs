@@ -1,4 +1,4 @@
-GitRepositoriesView.GitDirectories=C\:\\Users\\gram\\Desktop\\FinalProject\\TogatherProject\\.git;C\:\\Users\\gram\\git\\To_gather\\.git;C\:\\Users\\gram\\Desktop\\FinalProject\\TogatherProject2\\.git;
-GitRepositoriesView.GitDirectories.relative=TogatherProject\\.git;C\:\\Users\\gram\\git\\To_gather\\.git;TogatherProject2\\.git;
+GitRepositoriesView.GitDirectories=C\:\\Users\\gram\\Desktop\\FinalProject\\TogatherProject\\.git;C\:\\Users\\gram\\Desktop\\FinalProject\\.git;C\:\\Users\\gram\\git\\To_gather\\.git;C\:\\Users\\gram\\Desktop\\FinalProject\\TogatherProject2\\.git;
+GitRepositoriesView.GitDirectories.relative=TogatherProject\\.git;.git;C\:\\Users\\gram\\git\\To_gather\\.git;TogatherProject2\\.git;
 core_autoIgnoreDerivedResources=false
 eclipse.preferences.version=1
