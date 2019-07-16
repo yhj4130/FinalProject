@@ -94,12 +94,12 @@
 	<!-- 로그인전 게시물 조회 부분 -->
 	<definition name="postlist/before/*" extends="default1">
 		<put-attribute name="content"
-			value="/WEB-INF/views/category/before/{1}.jsp" />
+			value="/WEB-INF/views/postlist/before/{1}.jsp" />
 	</definition>
 	<!-- 로그인후 게시물 조회 부분 -->
 	<definition name="postlist/after/*" extends="default2">
 		<put-attribute name="content"
-			value="/WEB-INF/views/category/after/{1}.jsp" />
+			value="/WEB-INF/views/postlist/after/{1}.jsp" />
 	</definition>	
 
 </tiles-definitions>

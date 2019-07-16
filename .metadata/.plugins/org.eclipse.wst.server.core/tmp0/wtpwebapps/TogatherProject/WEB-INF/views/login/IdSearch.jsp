@@ -45,7 +45,7 @@
 	        		</table>
 	        		<br>        
 	        		<button type="submit" class="btn" style="width: 200px; float: left;">확인</button>
-	        		<button type="button" class="btn" style="width: 200px; float: right;" onclick="location.href='loginform.do'">취소</button> 
+	        		<button type="button" class="btn" style="width: 200px; float: right;" onclick="history.go(-1); return false;">취소</button> 
 	    		</form>       
 			</div>
 		</div>

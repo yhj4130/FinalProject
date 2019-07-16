@@ -2,6 +2,7 @@
 .contentBoth {
    color: #747474;
    display: flex;
+   margin-bottom: 100px;
 }
 
 .contentLeft {

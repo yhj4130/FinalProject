@@ -1,5 +1,0 @@
-package com.together.web.login;
-
-public interface IUserDAO {
-
-}
