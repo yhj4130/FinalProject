@@ -35,33 +35,27 @@
 			<th>출발일</th>
 			<th>도착일</th>
 		</tr>
+		
+		<c:if test="${empty goingInfo }">
 		<tr>
-			<td></td>
-			<td></td>
-			<td><img
-				src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
+			<td colspan="5">
+				<img src="<c:url value="resources/images/exclamationmark.png"/>" class="img-excla"> 
+				여행목록이 존재하지 않습니다.
+			</td>
 		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td><img
-				src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td><img
-				src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-		</tr>
+		</c:if>
+		
+		<c:forEach var="goingList" items="${goingInfo }" begin="0" end="2">
+			<tr>
+				<td>${goingList.title }</td>
+				<td>${goingList.nickName }</td>
+				<td class="d-day">D - ${goingList.goingDDay }</td>
+				<td>${goingList.t_Start }</td>
+				<td>${goingList.t_End }</td>
+				<!-- <img src="<c:url value="resources/images/exclamationmark.png"/>" class="img-excla"> 
+					여행목록이 존재하지 않습니다. -->
+			</tr>
+		</c:forEach>
 	</table>
 </div>
 
@@ -87,39 +81,29 @@
 			<th>도착일</th>
 			<th>링크</th>
 		</tr>
+		
+		<c:if test="${empty readyInfo }">
 		<tr>
-			<td></td>
-			<td></td>
-			<td><img src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-			<td><div class="listbutton">
-					<button type="submit" class="listbtn">Ready</button>
-				</div></td>
+			<td colspan="6">
+				<img src="<c:url value="resources/images/exclamationmark.png"/>" class="img-excla"> 
+				여행목록이 존재하지 않습니다.
+			</td>
 		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td><img src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-			<td><div class="listbutton">
-					<button type="submit" class="listbtn">Ready</button>
-				</div></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td><img src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-			<td><div class="listbutton">
-					<button type="submit" class="listbtn">Ready</button>
-				</div></td>
-		</tr>
+		</c:if>
+		<c:forEach var="ready" items="${readyInfo }" begin="0" end="2">
+			<tr>
+				<td>${ready.title }</td>
+				<td>${ready.nickName }</td>
+				<td class="d-day">D - ${ready.readyDDay }</td>
+				<td>${ready.t_Start }</td>
+				<td>${ready.t_End }</td>
+				<td>
+					<div class="listbutton">
+						<button type="button" class="listbtn" onclick="location.href=''">Ready</button>
+					</div>
+				</td>
+			</tr>
+		</c:forEach>
 	</table>
 </div>
 
@@ -146,30 +130,28 @@
 			<th>도착일</th>
 			<th>링크</th>
 		</tr>
+		
+		<c:if test="${empty pickInfo }">
 		<tr>
-			<td></td>
-			<td><img src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-			<td><button type="submit" class="listbtn">Pick</button></td>
+			<td colspan="5">
+				<img src="<c:url value="resources/images/exclamationmark.png"/>" class="img-excla"> 
+				여행목록이 존재하지 않습니다.
+			</td>
 		</tr>
-		<tr>
-			<td></td>
-			<td><img src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-			<td><button type="submit" class="listbtn">Pick</button></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><img src="<c:url value="resources/images/exclamationmark.png"/>"
-				class="img-excla"> 여행목록이 존재하지 않습니다.</td>
-			<td></td>
-			<td></td>
-			<td><button type="submit" class="listbtn">Pick</button></td>
-		</tr>
+		</c:if>
+		<c:forEach var="pick" items="${pickInfo }" begin="0" end="2">
+			<tr>
+				<td>${pick.title }</td>
+				<td class="d-day">D - ${pick.pickDDay }</td>
+				<td>${pick.t_Start }</td>
+				<td>${pick.t_End }</td>
+				<td>
+					<div class="listbutton">
+						<button type="button" class="listbtn" onclick="location.href=''">Pick</button>
+					</div>
+				</td>
+			</tr>
+		</c:forEach>
 	</table>
 </div>
 

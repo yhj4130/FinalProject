@@ -126,5 +126,26 @@
      	INSERT INTO EXIT(EXITCODE, USERCODE, EXITREASON)
 		VALUES( EXITSEQ.NEXTVAL, #{userCode}, #{exitReason})
      </insert>
+     
+     <select id="searchUserNickName"
+		parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT NICKNAME
+		FROM TBL_USER
+		WHERE USERCODE = #{userCode}
+	</select>
+
+	<select id="checkFavorTheme" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM U_THEMA
+		WHERE USERCODE = #{userCode}
+	</select>
+
+	<select id="checkFavorWriter" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM U_THEMA
+		WHERE USERCODE = #{userCode}
+	</select>
  
   </mapper>
