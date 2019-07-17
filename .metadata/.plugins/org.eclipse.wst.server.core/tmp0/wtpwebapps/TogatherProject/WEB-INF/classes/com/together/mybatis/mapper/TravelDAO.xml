@@ -225,6 +225,91 @@
 		 WHERE RNUM <![CDATA[>=]]> #{start} 
 		   AND RNUM <![CDATA[<=]]> #{end}
      </select> 
-
-  
+	
+	
+	<select id="searchAllNum" parameterType="com.together.web.category.TravelDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+		FROM BEST_VIEW
+		WHERE NICKNAME LIKE <![CDATA['%${search}%']]>
+		    OR  TITLE  LIKE <![CDATA['%${search}%']]>
+     </select>
+     
+     
+      <select id="searchAllList" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+      	SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM (  SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+    							,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+    							, IMG
+							FROM BEST_VIEW
+							WHERE NICKNAME LIKE <![CDATA['%${search}%']]>
+		    						OR  TITLE  LIKE <![CDATA['%${search}%']]>
+							ORDER BY ${orderBy}) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select> 
+     
+     
+     <!--  -->
+     
+     <select id="searchTitleNum" parameterType="com.together.web.category.TravelDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+		FROM BEST_VIEW
+		WHERE TITLE  LIKE <![CDATA['%${search}%']]>
+     </select>
+     
+     
+      <select id="searchTitleList" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+      	SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM (  SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+    							,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+    							, IMG
+							FROM BEST_VIEW
+							WHERE TITLE  LIKE <![CDATA['%${search}%']]>
+							ORDER BY ${orderBy}) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select> 
+     
+     <!--  -->
+     
+     <select id="searchWriterNum" parameterType="com.together.web.category.TravelDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+		FROM BEST_VIEW
+		WHERE NICKNAME LIKE <![CDATA['%${search}%']]>
+     </select>
+     
+     
+      <select id="searchWriterList" parameterType="com.together.web.category.TravelDTO" resultType="com.together.web.category.TravelDTO">
+      	SELECT TRAVELCODE
+  		      ,TITLE
+  		      ,NICKNAME
+  		      ,T_START
+  		      ,T_END
+  		      ,RECRUIT_END
+  		      ,IMG
+		  FROM ( SELECT ROWNUM AS RNUM, DATA.*
+    		       FROM (  SELECT TRAVELCODE, TITLE, NICKNAME, TO_CHAR(T_START,'YYYY-MM-DD') AS T_START
+    							,TO_CHAR(T_END,'YYYY-MM-DD') AS T_END, TO_CHAR((RECRUIT_START + 14),'YYYY-MM-DD') AS RECRUIT_END
+    							, IMG
+							FROM BEST_VIEW
+							WHERE NICKNAME LIKE <![CDATA['%${search}%']]>		    						
+							ORDER BY ${orderBy}) DATA )
+		 WHERE RNUM <![CDATA[>=]]> #{start} 
+		   AND RNUM <![CDATA[<=]]> #{end}
+     </select> 
+  	
   </mapper>

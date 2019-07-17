@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%
+   request.setCharacterEncoding("UTF-8");
+   String cp = request.getContextPath();
+%>
 <div class="category" style="width: 1140px; height: 50px; border: solid; border-color: gray">
 	<div class="nevigatorBtn">
 		<!-- 전체 카테고리 버튼 -->
@@ -64,16 +67,16 @@
 	</div>
 	<div class="nevigatorSearch form-inline">
 		<!-- 검색 조건 -->
-		<select class="custom-select">
-			<option value="">전체</option>
-			<option value="">제목</option>
-			<option value="">여행작가</option>
+		<select class="custom-select" id="select" name="select">
+			<option value="1">전체</option>
+			<option value="2">제목</option>
+			<option value="3">여행작가</option>
 		</select>&emsp;&emsp;
 		<!-- 검색창 -->
 		<div class="input-group">
-			<input type="text" class="form-control" placeholder="search">
+			<input type="text" class="form-control" placeholder="search" id="search" name="search">
 			<div class="input-group-append">
-				<button class="btn btn-info searchBtn" type="submit">
+				<button class="btn btn-info searchBtn" type="submit" id="searchBtn" name="searchBtn">
 					<i class="fa fa-search"></i>
 				</button>
 			</div>
@@ -84,3 +87,15 @@
 		</button>
 	</div>
 </div>
+
+<script type="text/javascript">
+	
+	$("#searchBtn").click(function() {
+		
+		var select = $("#select").val();
+		var search = $("#search").val();
+		
+		location.href = "<%=cp%>/searchlist.do?select=" + select + "&search=" + search;
+	});
+
+</script>
