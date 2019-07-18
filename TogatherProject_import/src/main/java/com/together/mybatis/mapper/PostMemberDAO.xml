@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.together.web.posts.IPostMemberDAO">
+
+	<!-- 임시보관함 갯수 -->
+	<select id="countTemp"  resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM
+		(
+		SELECT COUNT(*) 
+		FROM TEMP_TRAVEL
+		WHERE USERCODE = #{userCode}
+		
+		MINUS
+		
+		SELECT COUNT(*)
+		FROM TEMP_TRAVEL TT, TRAVEL T
+		WHERE TT.TEMPCODE = T.TEMPCODE
+		    AND (T.RECRUIT_START<![CDATA[<]]>SYSDATE AND
+		    T.RECRUIT_START+14<![CDATA[>]]> SYSDATE)
+		AND TT.USERCODE = #{userCode}
+		)
+	</select>
+	
+	<!-- 임시저장테이블 쿼리문 -->
+	<insert id="addTemp_travel" parameterType="com.together.web.posts.TempDTO">
+			INSERT INTO TEMP_TRAVEL(
+			TEMPCODE,IMG,USERCODE,T_START,T_END,GENDERCODE,
+			PEOPLENUM,TITLE,INTRO,AGECODE,REGIST_DATE,LAST_EDITDATE)
+			VALUES(
+			(SELECT MAX(TEMPCODE)+1 FROM TEMP_TRAVEL),
+			#{savedName, jdbcType=VARCHAR},#{userCode, jdbcType=VARCHAR},TO_DATE(#{t_Start, jdbcType=VARCHAR},'YYYY-MM-DD')
+			,TO_DATE(#{t_End, jdbcType=VARCHAR},'YYYY-MM-DD'),
+			#{genderCode, jdbcType=INTEGER}, #{peopleNum, jdbcType=INTEGER}
+			, #{title, jdbcType=VARCHAR}, #{intro, jdbcType=VARCHAR}, #{ageCode, jdbcType=INTEGER},sysdate,sysdate)
+	</insert>
+	
+	<!-- Temp_code 찾기 -->
+	<select id="tempcode_Search" parameterType="com.together.web.posts.TempDTO" resultType="java.lang.Integer">
+		SELECT TEMPCODE FROM TEMP_TRAVEL
+		 WHERE T_START = TO_DATE(#{t_Start, jdbcType=VARCHAR},'YYYY-MM-DD') 
+		AND T_END=TO_DATE(#{t_End, jdbcType=VARCHAR},'YYYY-MM-DD') 
+		AND USERCODE=#{userCode, jdbcType=VARCHAR}
+	</select>
+	
+	<!--  테마 저장-->
+	 <insert id="addtThema" parameterType="map">
+	      INSERT INTO TEMP_THEMA(TP_THEMACODE,THEMACODE,TEMPCODE)
+	      VALUES(
+	      (SELECT MAX(TP_THEMACODE)+1 FROM TEMP_THEMA),      
+	      #{themaCode}, #{tempCode})
+	 </insert>
+	
+	
+	<!-- tp_region 테이블 저장 -->
+	<insert id="tp_Region" parameterType="com.together.web.posts.RegionDTO" >
+		INSERT INTO TP_REGION 
+		(TP_REGIONCODE, REGIONCODE, CITY, TEMPCODE, LON, LAT, PLACENAME, VEHICLE, R_COST, R_TIME, ETC, R_COMMENT )
+		VALUES( (SELECT MAX(TP_REGIONCODE)+1 FROM TP_REGION)
+		, ( SELECT REGIONCODE FROM REGION WHERE REGION = #{region}  ) 
+		,#{city} , #{tempCode}, #{lon}, #{lat} , #{placeName}, #{vehicle, jdbcType=VARCHAR}
+		, #{r_Cost, jdbcType=VARCHAR},#{r_Time, jdbcType=VARCHAR} , #{etc, jdbcType=VARCHAR}, #{r_Comment, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="isWriterCode" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM WRITER
+		WHERE USERCODE = #{userCode}
+	</select>
+	
+	<insert id="writerInsert" parameterType="java.lang.Integer">
+		INSERT INTO WRITER (WRITERCODE, USERCODE)
+		VALUES((SELECT MAX(WRITERCODE)+1 FROM WRITER ), #{userCode} )
+	</insert>
+	
+	<select id="writerCodeSearch" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT WRITERCODE
+		FROM WRITER
+		WHERE USERCODE = #{userCode}
+	</select>
+	
+	<select id="searchTempCode" parameterType="com.together.web.posts.TempDTO" resultType="java.lang.Integer">
+		SELECT TEMPCODE
+ 		FROM TEMP_TRAVEL
+ 		WHERE USERCODE = #{userCode}
+    		AND T_START = TO_DATE(#{t_Start}, 'YYYY-MM-DD') 
+    		AND T_END =TO_DATE(#{t_End}, 'YYYY-MM-DD')
+	</select>
+	
+	<select id="tempInfo" parameterType="java.lang.Integer" resultType="com.together.web.posts.TempDTO">
+		SELECT TEMPCODE, TO_CHAR(T_START, 'YYYY-MM-DD') AS T_START, TO_CHAR(T_END, 'YYYY-MM-DD') AS T_END, GENDERCODE, PEOPLENUM, TITLE, INTRO, IMG, AGECODE
+ 		FROM TEMP_TRAVEL
+ 		WHERE TEMPCODE = #{tempCode}
+	</select>
+	
+	<insert id="travelInsert" parameterType="com.together.web.posts.TempDTO">
+		INSERT INTO TRAVEL(TRAVELCODE, WRITERCODE,  TEMPCODE, T_START, T_END, GENDERCODE, PEOPLENUM, TITLE, INTRO, IMG, AGECODE)
+ 		VALUES( (SELECT MAX(TRAVELCODE) +1 FROM TRAVEL)
+ 		, #{writerCode}, #{tempCode}, TO_DATE(#{t_Start, jdbcType=VARCHAR},'YYYY-MM-DD')
+			,TO_DATE(#{t_End, jdbcType=VARCHAR},'YYYY-MM-DD'), #{genderCode}, #{peopleNum}, #{title}, #{intro}, #{sa}, #{ageCode})
+	</insert>
+
+</mapper>
+
